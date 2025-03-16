@@ -1,7 +1,6 @@
 ﻿@page "/"
 @page "/blueprint-editor"
 @using DysonSphereBlueprints.Analysis.Analysis
-@using DysonSphereBlueprints.Analysis.Enums
 @using DysonSphereBlueprints.Web.Code
 @using DysonSphereBlueprints.Web.Code.Model
 @using DysonSphereBlueprints.Web.Code.Modifiers
@@ -32,10 +31,14 @@
     </RadzenStack>
     <RadzenStack Orientation="Orientation.Vertical" class="ms-auto">
         <strong>Actions</strong>
-        <RadzenButton Disabled=@(bpModel == null) Click="() => new TweakAddWarpers(bpModel, NotificationService).Apply()" Text="Add warpers"
-                      ButtonStyle="ButtonStyle.Base"></RadzenButton>
-        <RadzenButton Disabled=@(bpModel == null) Click="() => new TweakSetFills(bpModel, NotificationService).Apply()" Text="Set fill drones/vessels"
-                      ButtonStyle="ButtonStyle.Base"></RadzenButton>
+        @foreach (IBlueprintAction quickAction in quickActions)
+        {
+            <RadzenButton Disabled=@(bpModel == null)
+                          Click="() => quickAction.ApplyAll(bpModel!)"
+                          Text=@quickAction.Title
+                          title=@quickAction.Description
+                          ButtonStyle="ButtonStyle.Base"></RadzenButton>
+        }
     </RadzenStack>
     <RadzenStack Orientation="Orientation.Vertical">
         <RadzenButton Click="() => LoadDefault(1)" Text="Sample 1" ButtonStyle="ButtonStyle.Base"
@@ -64,23 +67,18 @@ else
                     <Items>
                         @foreach (BlueprintInterstellarLogisticsStationModel entry in bpModel.InterstellarLogisticsStations)
                         {
-                            IBlueprintAction[] actions = [
-                                new TweakAddWarpers(bpModel, NotificationService),
-                                new TweakSetFills(bpModel, NotificationService)
-                            ];
-                            
                             <RadzenAccordionItem
                                 Text=@($"No. {entry.Id} - {entry.Building} - {entry.StorageSlots.Count(x => x.Item != 0)} / {entry.StorageSlots.Length} items {(entry.HasWarperSlot ? " (has warper)" : "")}")>
                                 <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center"
                                              Gap="1rem"
                                              Wrap="FlexWrap.Wrap" JustifyContent="JustifyContent.End">
-                                    @foreach (IBlueprintAction action in actions)
+                                    @foreach (IBlueprintAction quickAction in quickActions)
                                     {
-                                        <RadzenButton Text=@action.Title
-                                                      Disabled=@(!action.CanApply(entry))
-                                                      title=@action.Description
+                                        <RadzenButton Text=@quickAction.Title
+                                                      Disabled=@(!quickAction.CanApply(entry))
+                                                      title=@quickAction.Description
                                                       ButtonStyle="ButtonStyle.Base" Size="ButtonSize.ExtraSmall"
-                                                      Click=@(args => action.Apply(entry))/>
+                                                      Click=@(args => quickAction.Apply(bpModel, entry))/>
                                     }
                                 </RadzenStack>
                                 <div class=" rz-shadow-0 rz-border-radius-0 rz-p-8" style="margin: 1rem;">
@@ -128,7 +126,8 @@ else
                                                           @bind-Value="entry.MinDroneLoad"
                                                           Step="10" Min="0" Max="100"></RadzenSlider>
                                             <RadzenText TextStyle="TextStyle.Overline"
-                                                        class="rz-display-flex rz-mt-4 rz-mb-0">Min vessel load (@entry.MinVesselLoad %)
+                                                        class="rz-display-flex rz-mt-4 rz-mb-0">Min vessel load
+                                                (@entry.MinVesselLoad %)
                                             </RadzenText>
                                             <RadzenSlider TValue="int"
                                                           @bind-Value="entry.MinVesselLoad"
@@ -284,6 +283,17 @@ else
     string txtBlueprintBase64;
     BlueprintEditModel? bpModel;
 
+    IBlueprintAction[] quickActions = [];
+
+    protected override void OnInitialized()
+    {
+        quickActions =
+        [
+            new TweakAddWarpers(NotificationService),
+            new TweakSetFills(NotificationService)
+        ];
+    }
+
     void LoadDefault(int idx)
     {
         txtBlueprintBase64 = BlueprintsSamples.GetSample(idx);
@@ -326,4 +336,5 @@ else
             Detail = success ? "Copied the blueprint" : "An error occurred"
         });
     }
+
 }

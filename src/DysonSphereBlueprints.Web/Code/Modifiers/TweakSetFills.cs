@@ -4,51 +4,58 @@ using Radzen;
 
 namespace DysonSphereBlueprints.Web.Code.Modifiers;
 
-public class TweakSetFills(BlueprintEditModel bpModel, NotificationService notificationService)
+public class TweakSetFills(NotificationService notificationService)
     : BlueprintAction<BlueprintLogisticsStationModel>(notificationService)
 {
     public override string Title => "Set fills";
     public override string Description => "Set drone/vessel fills as required";
 
-    protected override IEnumerable<BlueprintLogisticsStationModel> DiscoverEntries()
+    protected override IEnumerable<BlueprintLogisticsStationModel> DiscoverEntries(BlueprintEditModel bpModel)
     {
         return bpModel.PlanetaryLogisticsStations
             .Cast<BlueprintLogisticsStationModel>()
             .Concat(bpModel.InterstellarLogisticsStations);
     }
 
-    public override bool CanApply(BlueprintLogisticsStationModel entry)
-    {
-        return entry.StorageSlots.Any(s => s.LocalLogic != LogisticRole.None && s.Max != 0) ||
-               (entry is BlueprintInterstellarLogisticsStationModel inter &&
-                inter.StorageSlots.Any(s => s.RemoteLogic != LogisticRole.None && s.Max != 0));
-    }
-
-    protected override BlueprintActionResult PerformSingle(BlueprintLogisticsStationModel entry)
+    private (bool shouldHaveDrones, bool shouldHaveVessels) GetDesired(BlueprintLogisticsStationModel entry)
     {
         bool shouldHaveDrones = entry.StorageSlots.Any(s => s.LocalLogic != LogisticRole.None && s.Max != 0);
         bool shouldHaveVessels = entry.StorageSlots.Any(s => s.RemoteLogic != LogisticRole.None && s.Max != 0);
 
+        return (shouldHaveDrones, shouldHaveVessels);
+    }
+
+    public override bool CanApply(BlueprintLogisticsStationModel entry)
+    {
+        (bool shouldHaveDrones, bool shouldHaveVessels) = GetDesired(entry);
+
         if (entry is BlueprintPlanetaryLogisticsStationModel planetary)
         {
             if (planetary.FillDrones != shouldHaveDrones)
-            {
-                planetary.FillDrones = shouldHaveDrones;
-                return BlueprintActionResult.Success;
-            }
+                return true;
         }
-
-        if (entry is BlueprintInterstellarLogisticsStationModel interstellar)
+        else if (entry is BlueprintInterstellarLogisticsStationModel interstellar)
         {
             if (interstellar.FillDrones != shouldHaveDrones ||
                 interstellar.FillVessels != shouldHaveVessels)
-            {
-                interstellar.FillDrones = shouldHaveDrones;
-                interstellar.FillVessels = shouldHaveVessels;
-                return BlueprintActionResult.Success;
-            }
+                return true;
         }
+        else
+            throw new InvalidOperationException("Unexpected");
 
-        return BlueprintActionResult.Skipped; // Null means already set / skipped
+        return false;
+    }
+
+    protected override void PerformSingle(BlueprintLogisticsStationModel entry)
+    {
+        (bool shouldHaveDrones, bool shouldHaveVessels) = GetDesired(entry);
+
+        if (entry is BlueprintPlanetaryLogisticsStationModel planetary)
+            planetary.FillDrones = shouldHaveDrones;
+        else if (entry is BlueprintInterstellarLogisticsStationModel interstellar)
+        {
+            interstellar.FillDrones = shouldHaveDrones;
+            interstellar.FillVessels = shouldHaveVessels;
+        }
     }
 }
