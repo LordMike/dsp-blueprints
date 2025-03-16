@@ -1,0 +1,184 @@
+﻿@using DysonSphereBlueprints.Analysis.Analysis
+@using DysonSphereBlueprints.Web.Code
+@using DysonSphereBlueprints.Web.Code.Model
+@using DysonSphereBlueprints.Web.Code.Modifiers
+<RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center"
+             Gap="1rem"
+             Wrap="FlexWrap.Wrap" JustifyContent="JustifyContent.End">
+    @{
+        bool anyQuickActions = false;
+    }
+    @foreach (IBlueprintAction quickAction in QuickActions)
+    {
+        @if (quickAction.CanApply(Model))
+        {
+            <RadzenButton Text=@quickAction.Title
+                          title=@quickAction.Description
+                          ButtonStyle="ButtonStyle.Base" Size="ButtonSize.ExtraSmall"
+                          Click=@(args => quickAction.Apply(BlueprintEditModel, Model))/>
+
+            anyQuickActions = true;
+        }
+    }
+    @if (!anyQuickActions)
+    {
+        <span style="color: var(--rz-text-disabled-color)"
+              title="No quick actions available">No actions</span>
+    }
+</RadzenStack>
+<div class=" rz-shadow-0 rz-border-radius-0 rz-p-8" style="margin: 1rem;">
+    <RadzenText TextStyle="TextStyle.H6"><strong>Settings</strong></RadzenText>
+    <RadzenRow RowGap="0">
+        <RadzenColumn SizeSM="3">
+            <RadzenText TextStyle="TextStyle.Overline"
+                        class="rz-display-flex rz-mt-4 rz-mb-0">Fill
+                drones
+            </RadzenText>
+            <RadzenSwitch @bind-Value="Model.FillDrones"/>
+            @if (AsInterstellar != null)
+            {
+                <RadzenText TextStyle="TextStyle.Overline"
+                            class="rz-display-flex rz-mt-4 rz-mb-0">Fill
+                    vessels
+                </RadzenText>
+                <RadzenSwitch @bind-Value="AsInterstellar.FillVessels"/>
+            }
+        </RadzenColumn>
+        <RadzenColumn SizeSM="3">
+            @if (AsInterstellar != null)
+            {
+                <RadzenText TextStyle="TextStyle.Overline"
+                            class="rz-display-flex rz-mt-4 rz-mb-0">Use
+                    orbital
+                    collectors
+                </RadzenText>
+                <RadzenSwitch @bind-Value="AsInterstellar.UseOrbitalCollectors"/>
+                <RadzenText TextStyle="TextStyle.Overline"
+                            class="rz-display-flex rz-mt-4 rz-mb-0">
+                    Require warpers
+                </RadzenText>
+                <RadzenSwitch @bind-Value="AsInterstellar.RequireWarpers"/>
+                <RadzenText TextStyle="TextStyle.Overline"
+                            class="rz-display-flex rz-mt-4 rz-mb-0">
+                    Warper distance
+                </RadzenText>
+                <RadzenDropDown TValue="int" TextProperty="Text" ValueProperty="Value"
+                                Data="DspValues.WarperDistanceValues"
+                                @bind-Value="AsInterstellar.WarperDistance"/>
+            }
+        </RadzenColumn>
+        <RadzenColumn SizeSM="4">
+            <RadzenText TextStyle="TextStyle.Overline"
+                        class="rz-display-flex rz-mt-4 rz-mb-0">Min
+                drone
+                load (@Model.MinDroneLoad %)
+            </RadzenText>
+            <RadzenSlider TValue="int"
+                          @bind-Value="Model.MinDroneLoad"
+                          Step="10" Min="0" Max="100"></RadzenSlider>
+            @if (AsInterstellar != null)
+            {
+                <RadzenText TextStyle="TextStyle.Overline"
+                            class="rz-display-flex rz-mt-4 rz-mb-0">Min vessel load
+                    (@AsInterstellar.MinVesselLoad %)
+                </RadzenText>
+                <RadzenSlider TValue="int"
+                              @bind-Value="AsInterstellar.MinVesselLoad"
+                              Step="10" Min="0" Max="100"></RadzenSlider>
+            }
+            <RadzenText TextStyle="TextStyle.Overline"
+                        class="rz-display-flex rz-mt-4 rz-mb-0">Stack
+                count (@(Model.StackCount == 0 ? "tech limit" : Model.StackCount))
+            </RadzenText>
+            <RadzenSlider TValue="int"
+                          @bind-Value="Model.StackCount"
+                          Step="1" Min="0" Max="4"></RadzenSlider>
+        </RadzenColumn>
+        <RadzenColumn>
+
+        </RadzenColumn>
+    </RadzenRow>
+</div>
+<div class="rz-shadow-0 rz-border-radius-0 rz-p-8" style="margin: 1rem;">
+    <RadzenText TextStyle="TextStyle.H6"><strong>Storage</strong></RadzenText>
+    <div class="rz-data-grid rz-datatable rz-datatable-scrollable">
+        <table class="rz-grid-table rz-grid-table-fixed rz-grid-table-striped">
+            <thead>
+            <tr>
+                <th>Item</th>
+                <th>Max</th>
+                <th>Local</th>
+                <th>Remote</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (BlueprintLogisticsStationStorageModel storageView in Model.StorageSlots)
+            {
+                <tr>
+                    <td class="d-flex justify-content-between">
+                        <span>@storageView.Item</span>
+                        @* @if (storageView.UsedInASlot) *@
+                        @* { *@
+                        @*     <span *@
+                        @*         title="This item is also used in one or more belts out of the logistics station">(used in slot)</span> *@
+                        @* } *@
+                    </td>
+                    <td class="mx-2 my-1">
+                        <RadzenSlider Disabled=!storageView.HasItem
+                                      Value="@storageView.Max"
+                                      TValue="int"
+                                      Change=@(args => storageView.Max = args)
+                                      Step="100" Min="0" Max="20000"/>
+                        <span>@storageView.Max.ToString("N0")</span>
+                    </td>
+                    <td>
+                        <RadzenSelectBar Disabled=!storageView.HasItem
+                                         TValue="LogisticRole"
+                                         Size="ButtonSize.Small"
+                                         Value="storageView.LocalLogic"
+                                         Change=@(args => storageView.LocalLogic = args)>
+                            <Items>
+                                <RadzenSelectBarItem Value="LogisticRole.None"
+                                                     Text="Storage"/>
+                                <RadzenSelectBarItem Value="LogisticRole.Demand"
+                                                     Text="Demand"/>
+                                <RadzenSelectBarItem Value="LogisticRole.Supply"
+                                                     Text="Supply"/>
+                            </Items>
+                        </RadzenSelectBar>
+                    </td>
+                    <td>
+                        <RadzenSelectBar Disabled=!storageView.HasItem
+                                         TValue="LogisticRole" Size="ButtonSize.Small"
+                                         Value="storageView.RemoteLogic"
+                                         Change=@(args => storageView.RemoteLogic = args)>
+                            <Items>
+                                <RadzenSelectBarItem Value="LogisticRole.None"
+                                                     Text="Storage"/>
+                                <RadzenSelectBarItem Value="LogisticRole.Demand"
+                                                     Text="Demand"/>
+                                <RadzenSelectBarItem Value="LogisticRole.Supply"
+                                                     Text="Supply"/>
+                            </Items>
+                        </RadzenSelectBar>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    [Parameter] public BlueprintLogisticsStationModel Model { get; set; }
+    [Parameter] public IEnumerable<IBlueprintAction> QuickActions { get; set; }
+    [Parameter] public BlueprintEditModel BlueprintEditModel { get; set; }
+
+    public BlueprintInterstellarLogisticsStationModel? AsInterstellar;
+
+    protected override void OnInitialized()
+    {
+        AsInterstellar = Model as BlueprintInterstellarLogisticsStationModel;
+    }
+
+}

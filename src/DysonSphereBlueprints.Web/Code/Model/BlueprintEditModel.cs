@@ -27,26 +27,26 @@ public class BlueprintEditModel
 
     public string Title
     {
-        get => Blueprint.desc;
+        get => Blueprint.shortDesc;
         set
         {
-            if (Blueprint.desc == value)
+            if (Blueprint.shortDesc == value)
                 return;
             
-            Blueprint.desc = value;
+            Blueprint.shortDesc = value;
             SetModified(true);
         }
     }
 
     public string Description
     {
-        get => Blueprint.shortDesc;
+        get => Blueprint.desc;
         set
         {
-            if (Blueprint.shortDesc == value)
+            if (Blueprint.desc == value)
                 return;
 
-            Blueprint.shortDesc = value;
+            Blueprint.desc = value;
             SetModified(true);
         }
     }

@@ -1,0 +1,62 @@
+﻿@using DysonSphereBlueprints.Web.Code.Model
+
+<div class="rz-p-0 rz-p-md-12">
+    <RadzenRow Gap="1rem">
+        <RadzenColumn Size="12" SizeSM="6">
+            <RadzenStack>
+                <RadzenFormField Text="Title" Variant="@Variant.Outlined">
+                    <RadzenTextBox @bind-Value="@Model.Title" />
+                </RadzenFormField>
+                @* <RadzenFormField Text="RadzenPassword" Variant="@Variant.Outlined"> *@
+                @*     <RadzenTextBox @bind-Value="@value" /> *@
+                @* </RadzenFormField> *@
+                @* <RadzenFormField Text="RadzenDropDown" Variant="@Variant.Outlined"> *@
+                @*     <RadzenDropDown Data=@companyNames @bind-Value="@dropDownValue" /> *@
+                @* </RadzenFormField> *@
+                @* <RadzenFormField Text="RadzenAutoComplete" Variant="@Variant.Outlined"> *@
+                @*     <RadzenAutoComplete Data=@companyNames @bind-Value="@autoCompleteValue" /> *@
+                @* </RadzenFormField> *@
+                @* <RadzenFormField Text="RadzenDropDownDataGrid" Variant="@Variant.Outlined"> *@
+                @*     <RadzenDropDownDataGrid Data=@companyNames @bind-Value="@dropDownDataGridValue" /> *@
+                @* </RadzenFormField> *@
+            </RadzenStack>
+        </RadzenColumn>
+        <RadzenColumn Size="12" SizeSM="6">
+            <RadzenStack>
+                <RadzenFormField Text="Description" Variant="@Variant.Outlined">
+                    <RadzenTextArea @bind-Value="@Model.Description" Rows="4" />
+                </RadzenFormField>
+                @* <RadzenFormField Text="RadzenDatePicker" Variant="@Variant.Outlined"> *@
+                @*     <RadzenDatePicker @bind-Value="@date" ShowTime="@true" /> *@
+                @* </RadzenFormField> *@
+                @* <RadzenFormField Text="RadzenColorPicker" Variant="@Variant.Outlined"> *@
+                @*     <RadzenColorPicker @bind-Value="@color" /> *@
+                @* </RadzenFormField> *@
+                @* <RadzenFormField Text="RadzenRadioButtonList" Variant="@Variant.Outlined"> *@
+                @*     <RadzenRadioButtonList @bind-Value=@radioButtonValue TValue="int" class="rz-m-4 rz-mt-8"> *@
+                @*         <Items> *@
+                @*             <RadzenRadioButtonListItem Text="Orders" Value="1" /> *@
+                @*             <RadzenRadioButtonListItem Text="Employees" Value="2" /> *@
+                @*             <RadzenRadioButtonListItem Text="Customers" Value="3" /> *@
+                @*         </Items> *@
+                @*     </RadzenRadioButtonList> *@
+                @* </RadzenFormField> *@
+            </RadzenStack>
+        </RadzenColumn>
+    </RadzenRow>
+</div>
+
+@code {
+    [Parameter] public BlueprintEditModel Model { get; set; }
+
+    string value = "Text";
+    int intValue = 123;
+    int radioButtonValue = 1;
+    string dropDownValue = "Around the Horn";
+    string dropDownDataGridValue = "";
+    string autoCompleteValue = "";
+    string color = "rgb(68, 58, 110)";
+    DateTime? date = DateTime.Today;
+
+    IEnumerable<string> companyNames = ["a", "beta", "charlisky"];
+}

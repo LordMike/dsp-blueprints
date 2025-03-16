@@ -22,4 +22,8 @@
       <ProjectReference Include="..\DysonSphereBlueprints.Analysis\DysonSphereBlueprints.Analysis.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\Components\LogisticsStation.razor" />
+    </ItemGroup>
+
 </Project>
