@@ -1,0 +1,483 @@
+[
+  {
+    "ID": 2011,
+    "Type": "Logistics",
+    "Name": "Sorter MK.I",
+    "Uses": {
+      "Low": 9,
+      "High": 18
+    }
+  },
+  {
+    "ID": 2012,
+    "Type": "Logistics",
+    "Name": "Sorter MK.II",
+    "Uses": {
+      "Low": 9,
+      "High": 36
+    }
+  },
+  {
+    "ID": 2013,
+    "Type": "Logistics",
+    "Name": "Sorter MK.III",
+    "Uses": {
+      "Low": 9,
+      "High": 72
+    }
+  },
+  {
+    "ID": 2014,
+    "Type": "Logistics",
+    "Name": "Pile Sorter"
+  },
+  {
+    "ID": 2040,
+    "Type": "Logistics",
+    "Name": "Automatic Piler",
+    "Uses": {
+      "Low": 9,
+      "High": 144
+    }
+  },
+  {
+    "ID": 2030,
+    "Type": "Logistics",
+    "Name": "Traffic Monitor",
+    "Uses": {
+      "Low": 9,
+      "High": 36
+    }
+  },
+  {
+    "ID": 2313,
+    "Type": "Production",
+    "Name": "Spray Coater",
+    "Uses": {
+      "Low": 4,
+      "High": 90
+    }
+  },
+  {
+    "ID": 2107,
+    "Type": "Logistics",
+    "Name": "Logistics Distributor",
+    "Uses": {
+      "Low": 18,
+      "High": 9000
+    }
+  },
+  {
+    "ID": 2303,
+    "Type": "Production",
+    "Name": "Assembling Machine Mk.I",
+    "Uses": {
+      "Low": 12,
+      "High": 270
+    }
+  },
+  {
+    "ID": 2304,
+    "Type": "Production",
+    "Name": "Assembling Machine Mk.II",
+    "Uses": {
+      "Low": 15,
+      "High": 540
+    }
+  },
+  {
+    "ID": 2305,
+    "Type": "Production",
+    "Name": "Assembling Machine Mk.III",
+    "Uses": {
+      "Low": 18,
+      "High": 1080
+    }
+  },
+  {
+    "ID": 2318,
+    "Type": "Production",
+    "Name": "Re-composing Assembler",
+    "Uses": {
+      "Low": 54,
+      "High": 2700
+    }
+  },
+  {
+    "ID": 2202,
+    "Type": "Logistics",
+    "Name": "Wireless Power Tower",
+    "Uses": {
+      "Low": 90,
+      "High": 4800
+    }
+  },
+  {
+    "ID": 2212,
+    "Type": "Logistics",
+    "Name": "Satellite Substation",
+    "Uses": {
+      "Low": 360,
+      "High": 360
+    }
+  },
+  {
+    "ID": 2203,
+    "Type": "Production",
+    "Name": "Wind Turbine",
+    "Provides": {
+      "Low": 0,
+      "High": 300
+    }
+  },
+  {
+    "ID": 2204,
+    "Type": "Production",
+    "Name": "Thermal Power Plant",
+    "Provides": {
+      "Low": 2160,
+      "High": 2160
+    }
+  },
+  {
+    "ID": 2211,
+    "Type": "Production",
+    "Name": "Mini Fusion Power Plant",
+    "Provides": {
+      "Low": 15000,
+      "High": 15000
+    }
+  },
+  {
+    "ID": 2213,
+    "Type": "Production",
+    "Name": "Geothermal Power Station",
+    "Provides": {
+      "Low": 0,
+      "High": 4800
+    }
+  },
+  {
+    "ID": 2301,
+    "Type": "Production",
+    "Name": "Mining Machine",
+    "Uses": {
+      "Low": 24,
+      "High": 420
+    }
+  },
+  {
+    "ID": 2316,
+    "Type": "Production",
+    "Name": "Advanced Mining Machine",
+    "Uses": {
+      "Low": 168,
+      "High": 2940
+    }
+  },
+  {
+    "ID": 2306,
+    "Type": "Production",
+    "Name": "Water Pump",
+    "Uses": {
+      "Low": 12,
+      "High": 300
+    }
+  },
+  {
+    "ID": 2302,
+    "Type": "Production",
+    "Name": "Arc Smelter",
+    "Uses": {
+      "Low": 12,
+      "High": 360
+    }
+  },
+  {
+    "ID": 2315,
+    "Type": "Production",
+    "Name": "Plane Smelter",
+    "Uses": {
+      "Low": 48,
+      "High": 14400
+    }
+  },
+  {
+    "ID": 2319,
+    "Type": "Production",
+    "Name": "Negentropy Smelter",
+    "Uses": {
+      "Low": 96,
+      "High": 2880
+    }
+  },
+  {
+    "ID": 2307,
+    "Type": "Production",
+    "Name": "Oil Extractor",
+    "Uses": {
+      "Low": 24,
+      "High": 840
+    }
+  },
+  {
+    "ID": 2308,
+    "Type": "Production",
+    "Name": "Oil Refinery",
+    "Uses": {
+      "Low": 24,
+      "High": 960
+    }
+  },
+  {
+    "ID": 2309,
+    "Type": "Production",
+    "Name": "Chemical Plant",
+    "Uses": {
+      "Low": 24,
+      "High": 720
+    }
+  },
+  {
+    "ID": 2317,
+    "Type": "Production",
+    "Name": "Quantum Chemical Plant",
+    "Uses": {
+      "Low": 36,
+      "High": 2160
+    }
+  },
+  {
+    "ID": 2314,
+    "Type": "Production",
+    "Name": "Fractionator",
+    "Uses": {
+      "Low": 18,
+      "High": 720
+    }
+  },
+  {
+    "ID": 2205,
+    "Type": "Production",
+    "Name": "Solar Panel",
+    "Provides": {
+      "Low": 0,
+      "High": 360
+    }
+  },
+  {
+    "ID": 2206,
+    "Type": "Logistics",
+    "Name": "Accumulator",
+    "Uses": {
+      "Low": 1500,
+      "High": 1500
+    },
+    "Provides": {
+      "Low": 2250,
+      "High": 2250
+    }
+  },
+  {
+    "ID": 2207,
+    "Type": "Logistics",
+    "Name": "Accumulator (full)",
+    "Uses": {
+      "Low": 1500,
+      "High": 1500
+    },
+    "Provides": {
+      "Low": 2250,
+      "High": 2250
+    }
+  },
+  {
+    "ID": 2311,
+    "Type": "Production",
+    "Name": "EM-Rail Ejector",
+    "Uses": {
+      "Low": 60,
+      "High": 1800
+    }
+  },
+  {
+    "ID": 2208,
+    "Type": "Production",
+    "Name": "Ray Receiver",
+    "Provides": {
+      "Low": 0,
+      "High": 6000
+    }
+  },
+  {
+    "ID": 2312,
+    "Type": "Production",
+    "Name": "Vertical Launching Silo",
+    "Uses": {
+      "Low": 60,
+      "High": 18000
+    }
+  },
+  {
+    "ID": 2209,
+    "Type": "Logistics",
+    "Name": "Energy Exchanger",
+    "Uses": {
+      "Low": 54000,
+      "High": 540000
+    },
+    "Provides": {
+      "Low": 54000,
+      "High": 54000
+    }
+  },
+  {
+    "ID": 2310,
+    "Type": "Production",
+    "Name": "Miniature Particle Collider",
+    "Uses": {
+      "Low": 120,
+      "High": 12000
+    }
+  },
+  {
+    "ID": 2210,
+    "Type": "Production",
+    "Name": "Artificial Star",
+    "Provides": {
+      "Low": 72000,
+      "High": 72000
+    }
+  },
+  {
+    "ID": 2103,
+    "Type": "Logistics",
+    "Name": "Planetary Logistics Station",
+    "Uses": {
+      "Low": 60,
+      "High": 60000
+    }
+  },
+  {
+    "ID": 2104,
+    "Type": "Logistics",
+    "Name": "Interstellar Logistics Station",
+    "Uses": {
+      "Low": 60,
+      "High": 300000
+    }
+  },
+  {
+    "ID": 2105,
+    "Type": "Logistics",
+    "Name": "Orbital Collector"
+  },
+  {
+    "ID": 2901,
+    "Type": "Production",
+    "Name": "Matrix Lab",
+    "Uses": {
+      "Low": 12,
+      "High": 480
+    }
+  },
+  {
+    "ID": 2902,
+    "Type": "Production",
+    "Name": "Self-evolution Lab",
+    "Uses": {
+      "Low": 48,
+      "High": 1920
+    }
+  },
+  {
+    "ID": 3001,
+    "Type": "Turret",
+    "Name": "Gauss Turret",
+    "Uses": {
+      "Low": 9,
+      "High": 210
+    }
+  },
+  {
+    "ID": 3002,
+    "Type": "Turret",
+    "Name": "Laser Turret",
+    "Uses": {
+      "Low": 120,
+      "High": 3000
+    }
+  },
+  {
+    "ID": 3003,
+    "Type": "Turret",
+    "Name": "Implosion Cannon",
+    "Uses": {
+      "Low": 30,
+      "High": 750
+    }
+  },
+  {
+    "ID": 3004,
+    "Type": "Turret",
+    "Name": "Plasma Turret",
+    "Uses": {
+      "Low": 84,
+      "High": 1680
+    }
+  },
+  {
+    "ID": 3005,
+    "Type": "Turret",
+    "Name": "Missile Turret",
+    "Uses": {
+      "Low": 18,
+      "High": 600
+    }
+  },
+  {
+    "ID": 3006,
+    "Type": "Turret",
+    "Name": "Jammer Tower",
+    "Uses": {
+      "Low": 90,
+      "High": 1200
+    }
+  },
+  {
+    "ID": 3007,
+    "Type": "Defense",
+    "Name": "Signal Tower",
+    "Uses": {
+      "Low": 1350,
+      "High": 9600
+    }
+  },
+  {
+    "ID": 3008,
+    "Type": "Defense",
+    "Name": "Planetary Shield Generator",
+    "Uses": {
+      "Low": 12000,
+      "High": 24000
+    }
+  },
+  {
+    "ID": 3009,
+    "Type": "Defense",
+    "Name": "Battlefield Analysis Base",
+    "Uses": {
+      "Low": 60,
+      "High": 2400
+    }
+  },
+  {
+    "ID": 3010,
+    "Type": "Turret",
+    "Name": "SR Plasma Turret",
+    "Uses": {
+      "Low": 2100,
+      "High": 4200
+    }
+  }
+]

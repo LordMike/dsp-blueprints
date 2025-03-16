@@ -1,0 +1,329 @@
+﻿@page "/"
+@page "/blueprint-editor"
+@using DysonSphereBlueprints.Analysis.Analysis
+@using DysonSphereBlueprints.Analysis.Enums
+@using DysonSphereBlueprints.Web.Code
+@using DysonSphereBlueprints.Web.Code.Model
+@using DysonSphereBlueprints.Web.Code.Modifiers
+@inject NotificationService NotificationService
+@inject IJSRuntime JsService
+
+<PageTitle>Blueprint</PageTitle>
+
+<h1>Blueprint</h1>
+
+<RadzenStack Orientation="Orientation.Horizontal">
+    <RadzenStack Orientation="Orientation.Vertical">
+        <strong>Blueprint</strong>
+        <RadzenTextBox @bind-Value="txtBlueprintBase64" Cols="20" Placeholder="BLUEPRINT:..."/>
+
+        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center">
+            <RadzenButton Click="@ClickLoad" Text="Load"></RadzenButton>
+            <RadzenButton Click="@ClickCopy" Text="Copy"></RadzenButton>
+        </RadzenStack>
+    </RadzenStack>
+    <RadzenStack Orientation="Orientation.Horizontal">
+        @* <RadzenTextArea @bind-Value="txtDummy" Cols="20"></RadzenTextArea> *@
+        Dummy text
+        @if (bpModel != null)
+        {
+            @bpModel.Modified
+        }
+    </RadzenStack>
+    <RadzenStack Orientation="Orientation.Vertical" class="ms-auto">
+        <strong>Actions</strong>
+        <RadzenButton Disabled=@(bpModel == null) Click="() => new TweakAddWarpers(bpModel, NotificationService).Apply()" Text="Add warpers"
+                      ButtonStyle="ButtonStyle.Base"></RadzenButton>
+        <RadzenButton Disabled=@(bpModel == null) Click="() => new TweakSetFills(bpModel, NotificationService).Apply()" Text="Set fill drones/vessels"
+                      ButtonStyle="ButtonStyle.Base"></RadzenButton>
+    </RadzenStack>
+    <RadzenStack Orientation="Orientation.Vertical">
+        <RadzenButton Click="() => LoadDefault(1)" Text="Sample 1" ButtonStyle="ButtonStyle.Base"
+                      Size="ButtonSize.ExtraSmall"></RadzenButton>
+        <RadzenButton Click="() => LoadDefault(2)" Text="Sample 2" ButtonStyle="ButtonStyle.Base"
+                      Size="ButtonSize.ExtraSmall"></RadzenButton>
+        <RadzenButton Click="() => LoadDefault(3)" Text="Sample 3" ButtonStyle="ButtonStyle.Base"
+                      Size="ButtonSize.ExtraSmall"></RadzenButton>
+        <RadzenButton Click="() => LoadDefault(4)" Text="Sample 4" ButtonStyle="ButtonStyle.Base"
+                      Size="ButtonSize.ExtraSmall"></RadzenButton>
+    </RadzenStack>
+</RadzenStack>
+
+<div class="mt-4"></div>
+@if (bpModel == null)
+{
+    <span class="text-muted">No model loaded at this time</span>
+}
+else
+{
+    <RadzenTabs TabPosition="TabPosition.Top">
+        <Tabs>
+            <RadzenTabsItem
+                Text=@($"Interstellar logistics stations ({bpModel.InterstellarLogisticsStations.Count:N0})")>
+                <RadzenAccordion>
+                    <Items>
+                        @foreach (BlueprintInterstellarLogisticsStationModel entry in bpModel.InterstellarLogisticsStations)
+                        {
+                            IBlueprintAction[] actions = [
+                                new TweakAddWarpers(bpModel, NotificationService),
+                                new TweakSetFills(bpModel, NotificationService)
+                            ];
+                            
+                            <RadzenAccordionItem
+                                Text=@($"No. {entry.Id} - {entry.Building} - {entry.StorageSlots.Count(x => x.Item != 0)} / {entry.StorageSlots.Length} items {(entry.HasWarperSlot ? " (has warper)" : "")}")>
+                                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center"
+                                             Gap="1rem"
+                                             Wrap="FlexWrap.Wrap" JustifyContent="JustifyContent.End">
+                                    @foreach (IBlueprintAction action in actions)
+                                    {
+                                        <RadzenButton Text=@action.Title
+                                                      Disabled=@(!action.CanApply(entry))
+                                                      title=@action.Description
+                                                      ButtonStyle="ButtonStyle.Base" Size="ButtonSize.ExtraSmall"
+                                                      Click=@(args => action.Apply(entry))/>
+                                    }
+                                </RadzenStack>
+                                <div class=" rz-shadow-0 rz-border-radius-0 rz-p-8" style="margin: 1rem;">
+                                    <RadzenText TextStyle="TextStyle.H6"><strong>Settings</strong></RadzenText>
+                                    <RadzenRow RowGap="0">
+                                        <RadzenColumn SizeSM="3">
+                                            <RadzenText TextStyle="TextStyle.Overline"
+                                                        class="rz-display-flex rz-mt-4 rz-mb-0">Fill
+                                                drones
+                                            </RadzenText>
+                                            <RadzenSwitch @bind-Value="entry.FillDrones"/>
+                                            <RadzenText TextStyle="TextStyle.Overline"
+                                                        class="rz-display-flex rz-mt-4 rz-mb-0">Fill
+                                                vessels
+                                            </RadzenText>
+                                            <RadzenSwitch @bind-Value="entry.FillVessels"/>
+                                        </RadzenColumn>
+                                        <RadzenColumn SizeSM="3">
+                                            <RadzenText TextStyle="TextStyle.Overline"
+                                                        class="rz-display-flex rz-mt-4 rz-mb-0">Use
+                                                orbital
+                                                collectors
+                                            </RadzenText>
+                                            <RadzenSwitch @bind-Value="entry.UseOrbitalCollectors"/>
+                                            <RadzenText TextStyle="TextStyle.Overline"
+                                                        class="rz-display-flex rz-mt-4 rz-mb-0">
+                                                Require warpers
+                                            </RadzenText>
+                                            <RadzenSwitch @bind-Value="entry.RequireWarpers"/>
+                                            <RadzenText TextStyle="TextStyle.Overline"
+                                                        class="rz-display-flex rz-mt-4 rz-mb-0">
+                                                Warper distance
+                                            </RadzenText>
+                                            <RadzenDropDown TValue="int" TextProperty="Text" ValueProperty="Value"
+                                                            Data="DspValues.WarperDistanceValues"
+                                                            @bind-Value="entry.WarperDistance"/>
+                                        </RadzenColumn>
+                                        <RadzenColumn SizeSM="4">
+                                            <RadzenText TextStyle="TextStyle.Overline"
+                                                        class="rz-display-flex rz-mt-4 rz-mb-0">Min
+                                                drone
+                                                load (@entry.MinDroneLoad %)
+                                            </RadzenText>
+                                            <RadzenSlider TValue="int"
+                                                          @bind-Value="entry.MinDroneLoad"
+                                                          Step="10" Min="0" Max="100"></RadzenSlider>
+                                            <RadzenText TextStyle="TextStyle.Overline"
+                                                        class="rz-display-flex rz-mt-4 rz-mb-0">Min vessel load (@entry.MinVesselLoad %)
+                                            </RadzenText>
+                                            <RadzenSlider TValue="int"
+                                                          @bind-Value="entry.MinVesselLoad"
+                                                          Step="10" Min="0" Max="100"></RadzenSlider>
+                                            <RadzenText TextStyle="TextStyle.Overline"
+                                                        class="rz-display-flex rz-mt-4 rz-mb-0">Stack
+                                                count (@(entry.StackCount == 0 ? "tech limit" : entry.StackCount))
+                                            </RadzenText>
+                                            <RadzenSlider TValue="int"
+                                                          @bind-Value="entry.StackCount"
+                                                          Step="1" Min="0" Max="4"></RadzenSlider>
+                                        </RadzenColumn>
+                                        <RadzenColumn>
+
+                                        </RadzenColumn>
+                                    </RadzenRow>
+                                </div>
+                                <div class="rz-shadow-0 rz-border-radius-0 rz-p-8" style="margin: 1rem;">
+                                    <RadzenText TextStyle="TextStyle.H6"><strong>Storage</strong></RadzenText>
+                                    <div class="rz-data-grid rz-datatable rz-datatable-scrollable">
+                                        <table class="rz-grid-table rz-grid-table-fixed rz-grid-table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>Item</th>
+                                                <th>Max</th>
+                                                <th>Local</th>
+                                                <th>Remote</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach (BlueprintLogisticsStationStorageModel storageView in entry.StorageSlots)
+                                            {
+                                                <tr>
+                                                    <td class="d-flex justify-content-between">
+                                                        <span>@storageView.Item</span>
+                                                        @* @if (storageView.UsedInASlot) *@
+                                                        @* { *@
+                                                        @*     <span *@
+                                                        @*         title="This item is also used in one or more belts out of the logistics station">(used in slot)</span> *@
+                                                        @* } *@
+                                                    </td>
+                                                    <td class="mx-2 my-1">
+                                                        <RadzenSlider Disabled=!storageView.HasItem
+                                                                      Value="@storageView.Max"
+                                                                      TValue="int"
+                                                                      Change=@(args => storageView.Max = args)
+                                                                      Step="100" Min="0" Max="20000"/>
+                                                        <span>@storageView.Max.ToString("N0")</span>
+                                                    </td>
+                                                    <td>
+                                                        <RadzenSelectBar Disabled=!storageView.HasItem
+                                                                         TValue="LogisticRole"
+                                                                         Size="ButtonSize.Small"
+                                                                         Value="storageView.LocalLogic"
+                                                                         Change=@(args => storageView.LocalLogic = args)>
+                                                            <Items>
+                                                                <RadzenSelectBarItem Value="LogisticRole.None"
+                                                                                     Text="Storage"/>
+                                                                <RadzenSelectBarItem Value="LogisticRole.Demand"
+                                                                                     Text="Demand"/>
+                                                                <RadzenSelectBarItem Value="LogisticRole.Supply"
+                                                                                     Text="Supply"/>
+                                                            </Items>
+                                                        </RadzenSelectBar>
+                                                    </td>
+                                                    <td>
+                                                        <RadzenSelectBar Disabled=!storageView.HasItem
+                                                                         TValue="LogisticRole" Size="ButtonSize.Small"
+                                                                         Value="storageView.RemoteLogic"
+                                                                         Change=@(args => storageView.RemoteLogic = args)>
+                                                            <Items>
+                                                                <RadzenSelectBarItem Value="LogisticRole.None"
+                                                                                     Text="Storage"/>
+                                                                <RadzenSelectBarItem Value="LogisticRole.Demand"
+                                                                                     Text="Demand"/>
+                                                                <RadzenSelectBarItem Value="LogisticRole.Supply"
+                                                                                     Text="Supply"/>
+                                                            </Items>
+                                                        </RadzenSelectBar>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </RadzenAccordionItem>
+                        }
+                    </Items>
+                </RadzenAccordion>
+            </RadzenTabsItem>
+            @* <RadzenTabsItem Text=@($"Buildings ({bpModel.buildings.Length:N0})")> *@
+            @*     <div class="rz-data-grid rz-datatable rz-datatable-scrollable"> *@
+            @*         <table class="rz-grid-table rz-grid-table-fixed rz-grid-table-striped"> *@
+            @*             <thead> *@
+            @*             <tr> *@
+            @*                 <th>Building</th> *@
+            @*                 <th>Recipe</th> *@
+            @*                 <th>Count</th> *@
+            @*             </tr> *@
+            @*             </thead> *@
+            @*             <tbody> *@
+            @*             @{ *@
+            @*                 var buildingRecipeGroups = bpModel *@
+            @*                     .buildings *@
+            @*                     .GroupBy(s => new { Item = (DspItem)s.itemId, Recipe = (DspRecipe)s.recipeId }) *@
+            @*                     .OrderBy(s => s.Key.Item.ToString()) *@
+            @*                     .ThenBy(s => s.Key.Recipe.ToString()) *@
+            @*                     .ToList(); *@
+            @*             } *@
+            @*             @foreach (var building in buildingRecipeGroups) *@
+            @*             { *@
+            @*                 <tr> *@
+            @*                     <td class="d-flex justify-content-between"> *@
+            @*                         @building.Key.Item *@
+            @*                     </td> *@
+            @*                     <td class="mx-2 my-1"> *@
+            @*                         @if (building.Key.Recipe != 0) *@
+            @*                         { *@
+            @*                             @building.Key.Recipe *@
+            @*                         } *@
+            @*                         else *@
+            @*                         { *@
+            @*                             <span class="text-muted fst-italic">None</span> *@
+            @*                         } *@
+            @*                     </td> *@
+            @*                     <td> *@
+            @*                         @building.Count().ToString("N0") *@
+            @*                     </td> *@
+            @*                 </tr> *@
+            @*             } *@
+            @*             </tbody> *@
+            @*         </table> *@
+            @*     </div> *@
+            @* </RadzenTabsItem> *@
+        </Tabs>
+    </RadzenTabs>
+}
+
+<script>
+    async function copyTextToClipboard(text) {
+        try {
+            await navigator.clipboard.writeText(text);
+            return true;
+        } catch (error) {
+            console.error(error.message);
+            return false;
+        }
+    }
+</script>
+
+@code {
+    string txtBlueprintBase64;
+    BlueprintEditModel? bpModel;
+
+    void LoadDefault(int idx)
+    {
+        txtBlueprintBase64 = BlueprintsSamples.GetSample(idx);
+        ClickLoad();
+    }
+
+    void RenderBlueprint()
+    {
+        bpModel.Title ??= "desc1";
+        bpModel.Description ??= "desc2";
+        bpModel.GameVersion ??= "v1";
+
+        txtBlueprintBase64 = bpModel.RenderBlueprint();
+    }
+
+    void ClickLoad()
+    {
+        BlueprintData? dspBpModel = BlueprintData.CreateNew(txtBlueprintBase64);
+        bpModel = new BlueprintEditModel(dspBpModel);
+        if (bpModel == null)
+            return;
+
+        StateHasChanged();
+    }
+
+    async Task ClickCopy()
+    {
+        if (bpModel.Modified)
+        {
+            RenderBlueprint();
+            bpModel.SetModified(false);
+        }
+
+        bool success = await JsService.InvokeAsync<bool>("copyTextToClipboard", txtBlueprintBase64);
+        NotificationService.Notify(new NotificationMessage
+        {
+            Duration = 10000,
+            Severity = success ? NotificationSeverity.Info : NotificationSeverity.Warning,
+            Summary = "Copy text",
+            Detail = success ? "Copied the blueprint" : "An error occurred"
+        });
+    }
+}

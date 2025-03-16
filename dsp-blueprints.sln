@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FE0DAD9A-2576-41D0-B562-E5E545F2DA08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DysonSphereBlueprints.Db", "src\DysonSphereBlueprints.Db\DysonSphereBlueprints.Db.csproj", "{AC81F3F2-24E6-45E1-AE5C-1AD6D5C96389}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DysonSphereBlueprints.ItemStore", "src\DysonSphereBlueprints.ItemStore\DysonSphereBlueprints.ItemStore.csproj", "{B72D6B6E-24F4-4446-A97B-A11F75B5BD78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DysonSphereBlueprints.Ripper", "src\DysonSphereBlueprints.Ripper\DysonSphereBlueprints.Ripper.csproj", "{57698894-EECD-44CF-8029-655787146AE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DysonSphereBlueprints.Viewer", "src\DysonSphereBlueprints.Viewer\DysonSphereBlueprints.Viewer.csproj", "{640196AA-53C6-4E89-ABC3-840FB0E229A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DysonSphereBlueprints.Web", "src\DysonSphereBlueprints.Web\DysonSphereBlueprints.Web.csproj", "{3694F869-2D8E-43A0-95F5-C21509B37C5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DysonSphereBlueprints.Analysis", "src\DysonSphereBlueprints.Analysis\DysonSphereBlueprints.Analysis.csproj", "{7D8994A5-A46C-4492-B4C4-FFC17673F2DE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AC81F3F2-24E6-45E1-AE5C-1AD6D5C96389}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC81F3F2-24E6-45E1-AE5C-1AD6D5C96389}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC81F3F2-24E6-45E1-AE5C-1AD6D5C96389}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC81F3F2-24E6-45E1-AE5C-1AD6D5C96389}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B72D6B6E-24F4-4446-A97B-A11F75B5BD78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B72D6B6E-24F4-4446-A97B-A11F75B5BD78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B72D6B6E-24F4-4446-A97B-A11F75B5BD78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B72D6B6E-24F4-4446-A97B-A11F75B5BD78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57698894-EECD-44CF-8029-655787146AE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57698894-EECD-44CF-8029-655787146AE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57698894-EECD-44CF-8029-655787146AE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57698894-EECD-44CF-8029-655787146AE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{640196AA-53C6-4E89-ABC3-840FB0E229A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{640196AA-53C6-4E89-ABC3-840FB0E229A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{640196AA-53C6-4E89-ABC3-840FB0E229A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{640196AA-53C6-4E89-ABC3-840FB0E229A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3694F869-2D8E-43A0-95F5-C21509B37C5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3694F869-2D8E-43A0-95F5-C21509B37C5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3694F869-2D8E-43A0-95F5-C21509B37C5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3694F869-2D8E-43A0-95F5-C21509B37C5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D8994A5-A46C-4492-B4C4-FFC17673F2DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D8994A5-A46C-4492-B4C4-FFC17673F2DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D8994A5-A46C-4492-B4C4-FFC17673F2DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D8994A5-A46C-4492-B4C4-FFC17673F2DE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AC81F3F2-24E6-45E1-AE5C-1AD6D5C96389} = {FE0DAD9A-2576-41D0-B562-E5E545F2DA08}
+		{B72D6B6E-24F4-4446-A97B-A11F75B5BD78} = {FE0DAD9A-2576-41D0-B562-E5E545F2DA08}
+		{57698894-EECD-44CF-8029-655787146AE7} = {FE0DAD9A-2576-41D0-B562-E5E545F2DA08}
+		{640196AA-53C6-4E89-ABC3-840FB0E229A3} = {FE0DAD9A-2576-41D0-B562-E5E545F2DA08}
+		{3694F869-2D8E-43A0-95F5-C21509B37C5F} = {FE0DAD9A-2576-41D0-B562-E5E545F2DA08}
+		{7D8994A5-A46C-4492-B4C4-FFC17673F2DE} = {FE0DAD9A-2576-41D0-B562-E5E545F2DA08}
+	EndGlobalSection
+EndGlobal
