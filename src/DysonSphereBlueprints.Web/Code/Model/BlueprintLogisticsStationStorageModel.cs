@@ -1,26 +1,41 @@
-﻿using DysonSphereBlueprints.Analysis.Analysis;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using DysonSphereBlueprints.Analysis.Analysis;
 using DysonSphereBlueprints.Analysis.Enums;
 
 namespace DysonSphereBlueprints.Web.Code.Model;
 
-public record BlueprintLogisticsStationStorageModel(BlueprintLogisticsStationModel LogisticsStationModel, int Index)
+public sealed record BlueprintLogisticsStationStorageModel(BlueprintLogisticsStationModel LogisticsStationModel, int Index)
+    : INotifyPropertyChanged
 {
     public DspItem Item
     {
         get => (DspItem)LogisticsStationModel.Reference.parameters[Index * 6];
-        set => LogisticsStationModel.SetParameter(Index * 6, (int)value);
+        set
+        {
+            LogisticsStationModel.Reference.parameters[Index * 6] = (int)value;
+            NotifyPropertyChanged();
+        }
     }
 
     public LogisticRole LocalLogic
     {
         get => (LogisticRole)LogisticsStationModel.Reference.parameters[Index * 6 + 1];
-        set => LogisticsStationModel.SetParameter(Index * 6 + 1, (int)value);
+        set
+        {
+            LogisticsStationModel.Reference.parameters[Index * 6 + 1] = (int)value;
+            NotifyPropertyChanged();
+        }
     }
 
     public LogisticRole RemoteLogic
     {
         get => (LogisticRole)LogisticsStationModel.Reference.parameters[Index * 6 + 2];
-        set => LogisticsStationModel.SetParameter(Index * 6 + 2, (int)value);
+        set
+        {
+            LogisticsStationModel.Reference.parameters[Index * 6 + 2] = (int)value;
+            NotifyPropertyChanged();
+        }
     }
 
     /// <summary>
@@ -29,16 +44,27 @@ public record BlueprintLogisticsStationStorageModel(BlueprintLogisticsStationMod
     public int Max
     {
         get => LogisticsStationModel.Reference.parameters[Index * 6 + 3];
-        set => LogisticsStationModel.SetParameter(Index * 6 + 3, value);
+        set
+        {
+            LogisticsStationModel.Reference.parameters[Index * 6 + 3] = value;
+            NotifyPropertyChanged();
+        }
     }
 
     public int KeepMode
     {
         get => LogisticsStationModel.Reference.parameters[Index * 6 + 4];
-        set => LogisticsStationModel.SetParameter(Index * 6 + 4, value);
+        set
+        {
+            LogisticsStationModel.Reference.parameters[Index * 6 + 4] = value;
+            NotifyPropertyChanged();
+        }
     }
 
     public bool HasItem => Item != 0;
+    
+    public event PropertyChangedEventHandler? PropertyChanged;
 
-    // public bool IsUsedInSlot => LogisticsStationModel.Reference.Slots.Any(x => x.StorageIndex == idx)
+    private void NotifyPropertyChanged([CallerMemberName] string? name = null) =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 }

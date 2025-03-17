@@ -1,8 +1,10 @@
-﻿using DysonSphereBlueprints.Analysis.Enums;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using DysonSphereBlueprints.Analysis.Enums;
 
 namespace DysonSphereBlueprints.Web.Code.Model;
 
-public class BlueprintEditModel
+public sealed class BlueprintEditModel : INotifyPropertyChanged
 {
     public BlueprintEditModel(BlueprintData blueprint)
     {
@@ -13,12 +15,28 @@ public class BlueprintEditModel
             BlueprintBuilding? building = blueprint.buildings[index];
             DspItem itemId = (DspItem)building.itemId;
             if (itemId is DspItem.PlanetaryLogisticsStation)
-                PlanetaryLogisticsStations.Add(
-                    new BlueprintPlanetaryLogisticsStationModel(this, building, index, itemId));
+            {
+                BlueprintPlanetaryLogisticsStationModel model =
+                    new BlueprintPlanetaryLogisticsStationModel(building, index, itemId);
+                PlanetaryLogisticsStations.Add(model);
+                model.PropertyChanged += (_, _) =>
+                {
+                    NotifyPropertyChanged(nameof(PlanetaryLogisticsStations));
+                    SetModified(true);
+                };
+            }
 
             if (itemId is DspItem.InterstellarLogisticsStation)
-                InterstellarLogisticsStations.Add(
-                    new BlueprintInterstellarLogisticsStationModel(this, building, index, itemId));
+            {
+                BlueprintInterstellarLogisticsStationModel model =
+                    new BlueprintInterstellarLogisticsStationModel(building, index, itemId);
+                InterstellarLogisticsStations.Add(model);
+                model.PropertyChanged += (_, _) =>
+                {
+                    NotifyPropertyChanged(nameof(InterstellarLogisticsStations));
+                    SetModified(true);
+                };
+            }
         }
     }
 
@@ -32,8 +50,9 @@ public class BlueprintEditModel
         {
             if (Blueprint.shortDesc == value)
                 return;
-            
+
             Blueprint.shortDesc = value;
+            NotifyPropertyChanged();
             SetModified(true);
         }
     }
@@ -47,6 +66,7 @@ public class BlueprintEditModel
                 return;
 
             Blueprint.desc = value;
+            NotifyPropertyChanged();
             SetModified(true);
         }
     }
@@ -60,6 +80,7 @@ public class BlueprintEditModel
                 return;
 
             Blueprint.gameVersion = value;
+            NotifyPropertyChanged();
             SetModified(true);
         }
     }
@@ -67,7 +88,16 @@ public class BlueprintEditModel
     public List<BlueprintPlanetaryLogisticsStationModel> PlanetaryLogisticsStations { get; set; } = new();
     public List<BlueprintInterstellarLogisticsStationModel> InterstellarLogisticsStations { get; set; } = new();
 
-    public void SetModified(bool modified) => Modified = modified;
+    public void SetModified(bool modified)
+    {
+        Modified = modified;
+        NotifyPropertyChanged(nameof(Modified));
+    }
 
     public string RenderBlueprint() => Blueprint.ToBase64String();
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    private void NotifyPropertyChanged([CallerMemberName] string? name = null) =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 }

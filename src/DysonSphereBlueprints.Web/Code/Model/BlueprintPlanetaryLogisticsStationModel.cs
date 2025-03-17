@@ -2,9 +2,8 @@
 
 namespace DysonSphereBlueprints.Web.Code.Model;
 
-public class BlueprintPlanetaryLogisticsStationModel(
-    BlueprintEditModel editModel,
+public sealed class BlueprintPlanetaryLogisticsStationModel(
     BlueprintBuilding reference,
     int id,
     DspItem building)
-    : BlueprintLogisticsStationModel(editModel, reference, id, building);
+    : BlueprintLogisticsStationModel(reference, id, building);

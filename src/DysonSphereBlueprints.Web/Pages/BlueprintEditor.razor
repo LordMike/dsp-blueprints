@@ -1,5 +1,6 @@
 ﻿@page "/"
 @page "/blueprint-editor"
+@using System.ComponentModel
 @using DysonSphereBlueprints.Web.Code
 @using DysonSphereBlueprints.Web.Code.Model
 @using DysonSphereBlueprints.Web.Code.Modifiers
@@ -70,7 +71,7 @@ else
                 Text="Details">
                 <BlueprintDetails Model="bpModel"/>
             </RadzenTabsItem>
-            <RadzenTabsItem
+            <RadzenTabsItem Disabled=@(bpModel.InterstellarLogisticsStations.Count == 0)
                 Text=@($"Interstellar logistics stations ({bpModel.InterstellarLogisticsStations.Count:N0})")>
                 <RadzenAccordion>
                     <Items>
@@ -85,7 +86,7 @@ else
                     </Items>
                 </RadzenAccordion>
             </RadzenTabsItem>
-            <RadzenTabsItem
+            <RadzenTabsItem Disabled=@(bpModel.PlanetaryLogisticsStations.Count == 0)
                 Text=@($"Planetary logistics stations ({bpModel.PlanetaryLogisticsStations.Count:N0})")>
                 <RadzenAccordion>
                     <Items>
@@ -201,10 +202,16 @@ else
             return;
         }
 
+        if (bpModel != null)
+            bpModel.PropertyChanged -= OnBpModelChanged;
+
         bpModel = new BlueprintEditModel(dspBpModel);
+        bpModel.PropertyChanged += OnBpModelChanged;
 
         StateHasChanged();
     }
+
+    private void OnBpModelChanged(object? o, PropertyChangedEventArgs propertyChangedEventArgs) => InvokeAsync(StateHasChanged);
 
     async Task ClickCopy()
     {

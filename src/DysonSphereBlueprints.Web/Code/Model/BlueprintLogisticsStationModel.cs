@@ -1,16 +1,16 @@
-﻿using DysonSphereBlueprints.Analysis.Analysis;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using DysonSphereBlueprints.Analysis.Analysis;
 using DysonSphereBlueprints.Analysis.Enums;
 
 namespace DysonSphereBlueprints.Web.Code.Model;
 
-public abstract class BlueprintLogisticsStationModel
+public abstract class BlueprintLogisticsStationModel : INotifyPropertyChanged
 {
-    public BlueprintLogisticsStationModel(BlueprintEditModel editModel,
-        BlueprintBuilding reference,
+    protected BlueprintLogisticsStationModel(BlueprintBuilding reference,
         int id,
         DspItem building)
     {
-        EditModel = editModel;
         Reference = reference;
         Id = id;
         Building = building;
@@ -18,13 +18,16 @@ public abstract class BlueprintLogisticsStationModel
         StationInfo info = StationInfo.FromParameters(building, reference.parameters);
         BlueprintLogisticsStationStorageModel[] storageViews = info.Storage
             .Select((_, idx) =>
-                new BlueprintLogisticsStationStorageModel(this, idx))
+            {
+                BlueprintLogisticsStationStorageModel model = new BlueprintLogisticsStationStorageModel(this, idx);
+                model.PropertyChanged += (_, _) => NotifyPropertyChanged(nameof(StorageSlots));
+                return model;
+            })
             .ToArray();
 
         StorageSlots = storageViews;
     }
 
-    internal BlueprintEditModel EditModel { get; init; }
     internal BlueprintBuilding Reference { get; init; }
     public int Id { get; init; }
     public DspItem Building { get; init; }
@@ -34,7 +37,11 @@ public abstract class BlueprintLogisticsStationModel
     public bool FillDrones
     {
         get => Reference.parameters[330] == 1;
-        set => SetParameter(330, value ? 1 : 0);
+        set
+        {
+            Reference.parameters[330] = value ? 1 : 0;
+            NotifyPropertyChanged();
+        }
     }
 
     /// <summary>
@@ -43,7 +50,11 @@ public abstract class BlueprintLogisticsStationModel
     public int MinDroneLoad
     {
         get => Reference.parameters[326];
-        set => SetParameter(326, value);
+        set
+        {
+            Reference.parameters[326] = value;
+            NotifyPropertyChanged();
+        }
     }
 
     /// <summary>
@@ -52,16 +63,15 @@ public abstract class BlueprintLogisticsStationModel
     public int StackCount
     {
         get => Reference.parameters[328];
-        set => SetParameter(328, value);
-    }
-
-    public void SetParameter(int index, int newValue)
-    {
-        var prevValue = Reference.parameters[index];
-        if (prevValue != newValue)
+        set
         {
-            Reference.parameters[index] = newValue;
-            EditModel.SetModified(true);
+            Reference.parameters[328] = value;
+            NotifyPropertyChanged();
         }
     }
+    
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected void NotifyPropertyChanged([CallerMemberName] string? name = null) =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 }
