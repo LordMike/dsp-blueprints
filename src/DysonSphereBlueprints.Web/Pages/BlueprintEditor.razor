@@ -72,7 +72,7 @@ else
                 <BlueprintDetails Model="bpModel"/>
             </RadzenTabsItem>
             <RadzenTabsItem Disabled=@(bpModel.InterstellarLogisticsStations.Count == 0)
-                Text=@($"Interstellar logistics stations ({bpModel.InterstellarLogisticsStations.Count:N0})")>
+                            Text=@($"Interstellar logistics stations ({bpModel.InterstellarLogisticsStations.Count:N0})")>
                 <RadzenAccordion>
                     <Items>
                         @foreach (BlueprintInterstellarLogisticsStationModel entry in bpModel.InterstellarLogisticsStations)
@@ -87,7 +87,7 @@ else
                 </RadzenAccordion>
             </RadzenTabsItem>
             <RadzenTabsItem Disabled=@(bpModel.PlanetaryLogisticsStations.Count == 0)
-                Text=@($"Planetary logistics stations ({bpModel.PlanetaryLogisticsStations.Count:N0})")>
+                            Text=@($"Planetary logistics stations ({bpModel.PlanetaryLogisticsStations.Count:N0})")>
                 <RadzenAccordion>
                     <Items>
                         @foreach (BlueprintPlanetaryLogisticsStationModel entry in bpModel.PlanetaryLogisticsStations)
@@ -101,50 +101,9 @@ else
                     </Items>
                 </RadzenAccordion>
             </RadzenTabsItem>
-            @* <RadzenTabsItem Text=@($"Buildings ({bpModel.buildings.Length:N0})")> *@
-            @*     <div class="rz-data-grid rz-datatable rz-datatable-scrollable"> *@
-            @*         <table class="rz-grid-table rz-grid-table-fixed rz-grid-table-striped"> *@
-            @*             <thead> *@
-            @*             <tr> *@
-            @*                 <th>Building</th> *@
-            @*                 <th>Recipe</th> *@
-            @*                 <th>Count</th> *@
-            @*             </tr> *@
-            @*             </thead> *@
-            @*             <tbody> *@
-            @*             @{ *@
-            @*                 var buildingRecipeGroups = bpModel *@
-            @*                     .buildings *@
-            @*                     .GroupBy(s => new { Item = (DspItem)s.itemId, Recipe = (DspRecipe)s.recipeId }) *@
-            @*                     .OrderBy(s => s.Key.Item.ToString()) *@
-            @*                     .ThenBy(s => s.Key.Recipe.ToString()) *@
-            @*                     .ToList(); *@
-            @*             } *@
-            @*             @foreach (var building in buildingRecipeGroups) *@
-            @*             { *@
-            @*                 <tr> *@
-            @*                     <td class="d-flex justify-content-between"> *@
-            @*                         @building.Key.Item *@
-            @*                     </td> *@
-            @*                     <td class="mx-2 my-1"> *@
-            @*                         @if (building.Key.Recipe != 0) *@
-            @*                         { *@
-            @*                             @building.Key.Recipe *@
-            @*                         } *@
-            @*                         else *@
-            @*                         { *@
-            @*                             <span class="text-muted fst-italic">None</span> *@
-            @*                         } *@
-            @*                     </td> *@
-            @*                     <td> *@
-            @*                         @building.Count().ToString("N0") *@
-            @*                     </td> *@
-            @*                 </tr> *@
-            @*             } *@
-            @*             </tbody> *@
-            @*         </table> *@
-            @*     </div> *@
-            @* </RadzenTabsItem> *@
+            <RadzenTabsItem Text=@($"Buildings ({bpModel.Blueprint.buildings.Length:N0})")>
+                <BlueprintStats Model="bpModel"/>
+            </RadzenTabsItem>
         </Tabs>
     </RadzenTabs>
 }
@@ -207,8 +166,6 @@ else
 
         bpModel = new BlueprintEditModel(dspBpModel);
         bpModel.PropertyChanged += OnBpModelChanged;
-
-        StateHasChanged();
     }
 
     private void OnBpModelChanged(object? o, PropertyChangedEventArgs propertyChangedEventArgs) => InvokeAsync(StateHasChanged);
@@ -230,5 +187,4 @@ else
             Detail = success ? "Copied the blueprint" : "An error occurred"
         });
     }
-
 }

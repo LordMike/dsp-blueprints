@@ -1,0 +1,52 @@
+﻿@using DysonSphereBlueprints.Analysis.Enums
+@using DysonSphereBlueprints.Web.Code.Model
+
+<div class="rz-p-0 rz-p-md-12">
+    <div class="rz-data-grid rz-datatable rz-datatable-scrollable">
+        <table class="rz-grid-table rz-grid-table-fixed rz-grid-table-striped">
+            <thead>
+            <tr>
+                <th>Building</th>
+                <th>Recipe</th>
+                <th>Count</th>
+            </tr>
+            </thead>
+            <tbody>
+            @{
+                var buildingRecipeGroups = Model
+                    .Blueprint
+                    .buildings
+                    .GroupBy(s => new { Item = (DspItem)s.itemId, Recipe = (DspRecipe)s.recipeId })
+                    .OrderBy(s => s.Key.Item.ToString())
+                    .ThenBy(s => s.Key.Recipe.ToString())
+                    .ToList();
+            }
+            @foreach (var building in buildingRecipeGroups)
+            {
+                <tr>
+                    <td class="d-flex justify-content-between">
+                        @building.Key.Item
+                    </td>
+                    <td class="mx-2 my-1">
+                        @if (building.Key.Recipe != 0)
+                        {
+                            @building.Key.Recipe
+                        }
+                        else
+                        {
+                            <span class="text-muted fst-italic">None</span>
+                        }
+                    </td>
+                    <td>
+                        @building.Count().ToString("N0")
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    [Parameter] public BlueprintEditModel Model { get; set; }
+}

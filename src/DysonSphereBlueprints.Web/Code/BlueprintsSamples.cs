@@ -10,9 +10,9 @@ public static class BlueprintsSamples
 {
     private static BlueprintSample[] _samples =
     [
-        new BlueprintSample("Huge", "Resources/Samples/Huge.txt.gz", true),
-        new BlueprintSample("FFF02", "Resources/Samples/FFF02.txt.gz", true),
-        new BlueprintSample("Dense01", "Resources/Samples/Dense01.txt.gz", true),
+        new("Full planet Carrier Rockets", "Resources/Samples/Full planet Carrier Rockets.txt.gz", true),
+        new("Grabby Hands FFF-05B", "Resources/Samples/Grabby Hands FFF-05B.txt.gz", true),
+        new("Dense01", "Resources/Samples/DENSE Energetic Graphite 14,4K pmin.txt.gz", true),
     ];
 
     public static IEnumerable<BlueprintSample> GetSamples() => _samples;
