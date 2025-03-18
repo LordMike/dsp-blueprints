@@ -4,8 +4,6 @@ using System.Text;
 
 namespace DysonSphereBlueprints.Web.Code;
 
-public record BlueprintSample(string Name, string Path, bool UsesGz);
-
 public static class BlueprintsSamples
 {
     private static BlueprintSample[] _samples =

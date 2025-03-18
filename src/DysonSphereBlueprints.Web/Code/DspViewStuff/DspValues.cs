@@ -1,4 +1,4 @@
-﻿namespace DysonSphereBlueprints.Web.Code;
+﻿namespace DysonSphereBlueprints.Web.Code.DspViewStuff;
 
 public static class DspValues
 {

@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using DysonSphereBlueprints.Analysis.Analysis;
-using DysonSphereBlueprints.Analysis.Enums;
 using DysonSphereBlueprints.ItemStore;
+using DysonSphereBlueprints.ItemStore.Enums;
 using DysonSphereBlueprints.ItemStore.Model;
 
 namespace DysonSphereBlueprints.Analysis;

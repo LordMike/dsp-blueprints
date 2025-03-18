@@ -1,6 +1,6 @@
-﻿using DysonSphereBlueprints.Analysis.Enums;
+﻿using DysonSphereBlueprints.ItemStore.Enums;
 
-namespace DysonSphereBlueprints.Viewer;
+namespace DysonSphereBlueprints.Viewer.Extensions;
 
 static class Queries
 {

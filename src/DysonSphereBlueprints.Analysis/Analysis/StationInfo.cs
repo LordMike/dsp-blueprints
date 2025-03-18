@@ -1,4 +1,4 @@
-﻿using DysonSphereBlueprints.Analysis.Enums;
+﻿using DysonSphereBlueprints.ItemStore.Enums;
 
 namespace DysonSphereBlueprints.Analysis.Analysis;
 

@@ -1,4 +1,4 @@
-﻿namespace DysonSphereBlueprints.Analysis.Enums;
+﻿namespace DysonSphereBlueprints.ItemStore.Enums;
 
 public enum DspRecipe
 {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using DysonSphereBlueprints.Analysis.Enums;
+using DysonSphereBlueprints.ItemStore.Enums;
 
 namespace DysonSphereBlueprints.Web.Code.Model;
 

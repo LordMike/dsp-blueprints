@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-using DysonSphereBlueprints.Analysis.Enums;
+using DysonSphereBlueprints.ItemStore.Enums;
 using DysonSphereBlueprints.ItemStore.Model;
 
 namespace DysonSphereBlueprints.ItemStore;

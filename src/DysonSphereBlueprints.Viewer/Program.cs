@@ -6,15 +6,14 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using DysonSphereBlueprints.Analysis;
 using DysonSphereBlueprints.Analysis.Analysis;
-using DysonSphereBlueprints.Analysis.Enums;
 using DysonSphereBlueprints.Db;
+using DysonSphereBlueprints.ItemStore.Enums;
+using DysonSphereBlueprints.Viewer.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace DysonSphereBlueprints.Viewer;
-
-record BlueprintAnalysisPair(Blueprint Blueprint, BlueprintAnalysis Analysis);
 
 static class Program
 {

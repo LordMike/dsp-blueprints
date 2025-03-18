@@ -1,5 +1,5 @@
 ﻿using DysonSphereBlueprints.Analysis.Analysis;
-using DysonSphereBlueprints.Analysis.Enums;
+using DysonSphereBlueprints.ItemStore.Enums;
 using DysonSphereBlueprints.Web.Code.Model;
 using Radzen;
 
