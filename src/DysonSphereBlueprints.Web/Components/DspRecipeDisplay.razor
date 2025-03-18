@@ -1,0 +1,11 @@
+﻿@using DysonSphereBlueprints.Analysis.Enums
+
+<div class="d-flex align-items-center">
+    <div class="icon me-2" data-icon="recipe.@((int)Model)"
+         style="width: 2em"></div>
+    @Model
+</div>
+
+@code {
+    [Parameter] public DspRecipe Model { get; set; }
+}

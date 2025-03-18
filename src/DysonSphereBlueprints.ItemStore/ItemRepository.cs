@@ -1,6 +1,5 @@
-﻿using System.Reflection;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json;
+using DysonSphereBlueprints.Analysis.Enums;
 using DysonSphereBlueprints.ItemStore.Model;
 
 namespace DysonSphereBlueprints.ItemStore;
@@ -17,13 +16,15 @@ public class ItemRepository
     public IReadOnlyDictionary<int, ThemeProtoSetItem> Themes { get; }
     public IReadOnlyDictionary<int, VeinProtoSetItem> Veins { get; }
 
+    public IReadOnlySet<DspItem> ItemsThatCanProduce { get; }
+
     private ItemRepository()
     {
         JsonSerializerOptions serializerOptions = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true,
         };
-        
+
         using (Stream? fs =
                typeof(ItemRepository).Assembly.GetManifestResourceStream(
                    "DysonSphereBlueprints.ItemStore.Resources.powerusage.json"))
@@ -46,5 +47,22 @@ public class ItemRepository
             Themes = store.ThemeProtoSet.dataArray.ToDictionary(s => s.ID);
             Veins = store.VeinProtoSet.dataArray.ToDictionary(s => s.ID);
         }
+
+        ItemsThatCanProduce = new HashSet<DspItem>
+        {
+            DspItem.AssemblingMachineMkI,
+            DspItem.AssemblingMachineMkII,
+            DspItem.AssemblingMachineMkIII,
+            DspItem.ArcSmelter,
+            DspItem.NegentropySmelter,
+            DspItem.PlaneSmelter,
+            DspItem.Fractionator,
+            DspItem.ChemicalPlant,
+            DspItem.QuantumChemicalPlant,
+            DspItem.MiniatureParticleCollider,
+            DspItem.OilRefinery,
+            DspItem.MatrixLab,
+            DspItem.DarkFogMatrix
+        };
     }
 }

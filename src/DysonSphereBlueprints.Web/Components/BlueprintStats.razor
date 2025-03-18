@@ -27,12 +27,7 @@
                         {
                             <tr>
                                 <td>
-                                    <div class="d-flex align-items-center">
-                                        <div class="icon me-2" data-icon="item.@((int)building.Key)"
-                                             title="@building.Key"
-                                             style="width: 2em"></div>
-                                        @building.Key
-                                    </div>
+                                    <DspItemDisplay Model="building.Key" />
                                 </td>
                                 <td>
                                     @building.Count().ToString("N0")
@@ -60,8 +55,8 @@
                             var buildingRecipeGroups = Model
                                 .Blueprint
                                 .buildings
+                                .Where(s => ItemRepository.Instance.ItemsThatCanProduce.Contains((DspItem)s.itemId))
                                 .GroupBy(s => new { Item = (DspItem)s.itemId, Recipe = (DspRecipe)s.recipeId })
-                                .Where(s => ItemRepository.Instance.Items[(int)s.Key.Item].Productive)
                                 .OrderBy(s => s.Key.Item.ToString())
                                 .ThenBy(s => s.Key.Recipe.ToString())
                                 .ToList();
@@ -72,22 +67,13 @@
 
                             <tr>
                                 <td>
-                                    <div class="d-flex align-items-center">
-                                        <div class="icon me-2" data-icon="item.@((int)building.Key.Item)"
-                                             title="@building.Key.Item"
-                                             style="width: 2em"></div>
-                                        @building.Key.Item
-                                    </div>
+                                    <DspItemDisplay Model="building.Key.Item" />
                                 </td>
                                 <td class="mx-2 my-1">
                                     <div class="d-flex flex-column">
                                         @foreach (DspItem result in resultItems)
                                         {
-                                            <div class="d-flex align-items-center">
-                                                <div class="icon me-2" data-icon="item.@((int)result)" title="@result"
-                                                     style="width: 2em"></div>
-                                                @result
-                                            </div>
+                                            <DspItemDisplay Model="result" />
                                         }
                                     </div>
                                 </td>
