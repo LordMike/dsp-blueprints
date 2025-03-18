@@ -1,51 +1,108 @@
 ﻿@using DysonSphereBlueprints.Analysis.Enums
+@using DysonSphereBlueprints.ItemStore
 @using DysonSphereBlueprints.Web.Code.Model
 
-<div class="rz-p-0 rz-p-md-12">
-    <div class="rz-data-grid rz-datatable rz-datatable-scrollable">
-        <table class="rz-grid-table rz-grid-table-fixed rz-grid-table-striped">
-            <thead>
-            <tr>
-                <th>Building</th>
-                <th>Recipe</th>
-                <th>Count</th>
-            </tr>
-            </thead>
-            <tbody>
-            @{
-                var buildingRecipeGroups = Model
-                    .Blueprint
-                    .buildings
-                    .GroupBy(s => new { Item = (DspItem)s.itemId, Recipe = (DspRecipe)s.recipeId })
-                    .OrderBy(s => s.Key.Item.ToString())
-                    .ThenBy(s => s.Key.Recipe.ToString())
-                    .ToList();
-            }
-            @foreach (var building in buildingRecipeGroups)
-            {
-                <tr>
-                    <td class="d-flex justify-content-between">
-                        @building.Key.Item
-                    </td>
-                    <td class="mx-2 my-1">
-                        @if (building.Key.Recipe != 0)
-                        {
-                            @building.Key.Recipe
+<RadzenTabs TabPosition="TabPosition.Left">
+    <Tabs>
+        <RadzenTabsItem Text="Buildings">
+            <div class="rz-p-0 rz-p-md-12">
+                <div class="rz-data-grid rz-datatable rz-datatable-scrollable">
+                    <table class="rz-grid-table rz-grid-table-fixed rz-grid-table-striped">
+                        <thead>
+                        <tr>
+                            <th>Building</th>
+                            <th>Count</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @{
+                            var buildingGroups = Model
+                                .Blueprint
+                                .buildings
+                                .GroupBy(s => (DspItem)s.itemId)
+                                .OrderBy(s => s.Key.ToString())
+                                .ToList();
                         }
-                        else
+                        @foreach (var building in buildingGroups)
                         {
-                            <span class="text-muted fst-italic">None</span>
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="icon me-2" data-icon="item.@((int)building.Key)"
+                                             title="@building.Key"
+                                             style="width: 2em"></div>
+                                        @building.Key
+                                    </div>
+                                </td>
+                                <td>
+                                    @building.Count().ToString("N0")
+                                </td>
+                            </tr>
                         }
-                    </td>
-                    <td>
-                        @building.Count().ToString("N0")
-                    </td>
-                </tr>
-            }
-            </tbody>
-        </table>
-    </div>
-</div>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </RadzenTabsItem>
+        <RadzenTabsItem Text="Recipes">
+            <div class="rz-p-0 rz-p-md-12">
+                <div class="rz-data-grid rz-datatable rz-datatable-scrollable">
+                    <table class="rz-grid-table rz-grid-table-fixed rz-grid-table-striped">
+                        <thead>
+                        <tr>
+                            <th>Building</th>
+                            <th>Recipe</th>
+                            <th>Count</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @{
+                            var buildingRecipeGroups = Model
+                                .Blueprint
+                                .buildings
+                                .GroupBy(s => new { Item = (DspItem)s.itemId, Recipe = (DspRecipe)s.recipeId })
+                                .Where(s => ItemRepository.Instance.Items[(int)s.Key.Item].Productive)
+                                .OrderBy(s => s.Key.Item.ToString())
+                                .ThenBy(s => s.Key.Recipe.ToString())
+                                .ToList();
+                        }
+                        @foreach (var building in buildingRecipeGroups)
+                        {
+                            int[] resultItems = ItemRepository.Instance.Recipes[(int)building.Key.Recipe].Results;
+
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="icon me-2" data-icon="item.@((int)building.Key.Item)"
+                                             title="@building.Key.Item"
+                                             style="width: 2em"></div>
+                                        @building.Key.Item
+                                    </div>
+                                </td>
+                                <td class="mx-2 my-1">
+                                    <div class="d-flex flex-column">
+                                        @foreach (DspItem result in resultItems)
+                                        {
+                                            <div class="d-flex align-items-center">
+                                                <div class="icon me-2" data-icon="item.@((int)result)" title="@result"
+                                                     style="width: 2em"></div>
+                                                @result
+                                            </div>
+                                        }
+                                    </div>
+                                </td>
+                                <td>
+                                    @building.Count().ToString("N0")
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </RadzenTabsItem>
+    </Tabs>
+</RadzenTabs>
 
 @code {
     [Parameter] public BlueprintEditModel Model { get; set; }

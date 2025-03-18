@@ -16,7 +16,7 @@
 <RadzenStack Orientation="Orientation.Horizontal">
     <RadzenStack Orientation="Orientation.Vertical">
         <strong>Blueprint</strong>
-        <RadzenTextBox @bind-Value="txtBlueprintBase64" Placeholder="BLUEPRINT:..."/>
+        @* <RadzenTextBox @bind-Value="txtBlueprintBase64" Placeholder="BLUEPRINT:..."/> *@
 
         <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center">
             <RadzenButton Click="@ClickLoad" Text="Load"></RadzenButton>
@@ -29,6 +29,13 @@
             <RadzenAlert Variant="Variant.Flat" AlertStyle="AlertStyle.Warning" Icon="info" Shade="Shade.Lighter"
                          Size="AlertSize.ExtraSmall" AllowClose=false>
                 The blueprint has been modified, Copy it to get the latest changes
+            </RadzenAlert>
+        }
+        @if (isLoading)
+        {
+            <RadzenAlert Variant="Variant.Flat" AlertStyle="AlertStyle.Info" Icon="info" Shade="Shade.Lighter"
+                         Size="AlertSize.ExtraSmall" AllowClose=false>
+                Loading, this may take a while
             </RadzenAlert>
         }
     </RadzenStack>
@@ -123,6 +130,7 @@ else
 @code {
     string txtBlueprintBase64;
     BlueprintEditModel? bpModel;
+    bool isLoading;
 
     IBlueprintAction[] quickActions = [];
 
@@ -144,8 +152,17 @@ else
         txtBlueprintBase64 = bpModel.RenderBlueprint();
     }
 
-    void ClickLoad()
+    async Task ClickLoad()
     {
+        if (txtBlueprintBase64.Length > 200_000)
+        {
+            // Large blueprints will take time to load
+            isLoading = true;
+            // await Task.Yield();
+
+            await Task.Delay(200);            
+        }
+        
         BlueprintData dspBpModel = BlueprintData.CreateNew();
         BlueprintDataIOError loadCode = dspBpModel.FromBase64String(txtBlueprintBase64);
 
@@ -158,6 +175,9 @@ else
                 Summary = "Unable to load blueprint",
                 Detail = "The blueprint provided was not valid. Error code: " + loadCode
             });
+            
+            isLoading = false;
+            StateHasChanged();
             return;
         }
 
@@ -166,6 +186,9 @@ else
 
         bpModel = new BlueprintEditModel(dspBpModel);
         bpModel.PropertyChanged += OnBpModelChanged;
+        
+        isLoading = false;
+        StateHasChanged();
     }
 
     private void OnBpModelChanged(object? o, PropertyChangedEventArgs propertyChangedEventArgs) => InvokeAsync(StateHasChanged);
