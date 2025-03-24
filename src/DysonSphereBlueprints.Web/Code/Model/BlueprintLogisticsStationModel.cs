@@ -20,19 +20,30 @@ public abstract class BlueprintLogisticsStationModel : INotifyPropertyChanged
             .Select((_, idx) =>
             {
                 BlueprintLogisticsStationStorageModel model = new BlueprintLogisticsStationStorageModel(this, idx);
-                model.PropertyChanged += (_, _) => NotifyPropertyChanged(nameof(StorageSlots));
+                model.PropertyChanged += (_, _) => NotifyPropertyChanged(nameof(Storages));
                 return model;
             })
             .ToArray();
 
-        StorageSlots = storageViews;
+        BlueprintLogisticsStationSlotModel[] slotsViews = info.Slots
+            .Select((_, idx) =>
+            {
+                BlueprintLogisticsStationSlotModel model = new BlueprintLogisticsStationSlotModel(this, idx);
+                model.PropertyChanged += (_, _) => NotifyPropertyChanged(nameof(Slots));
+                return model;
+            })
+            .ToArray();
+
+        Storages = storageViews;
+        Slots = slotsViews;
     }
 
     internal BlueprintBuilding Reference { get; init; }
     public int Id { get; init; }
     public DspItem Building { get; init; }
 
-    public BlueprintLogisticsStationStorageModel[] StorageSlots { get; init; }
+    public BlueprintLogisticsStationStorageModel[] Storages { get; init; }
+    public BlueprintLogisticsStationSlotModel[] Slots { get; init; }
 
     public bool FillDrones
     {

@@ -61,5 +61,5 @@ public sealed class BlueprintInterstellarLogisticsStationModel(
         }
     }
 
-    public bool HasWarperSlot => StorageSlots.Any(x => x.Item == DspItem.SpaceWarper);
+    public bool HasWarperSlot => Storages.Any(x => x.Item == DspItem.SpaceWarper);
 }

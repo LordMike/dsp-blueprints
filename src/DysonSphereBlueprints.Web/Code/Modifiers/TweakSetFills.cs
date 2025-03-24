@@ -19,8 +19,8 @@ public class TweakSetFills(NotificationService notificationService)
 
     private (bool shouldHaveDrones, bool shouldHaveVessels) GetDesired(BlueprintLogisticsStationModel entry)
     {
-        bool shouldHaveDrones = entry.StorageSlots.Any(s => s.LocalLogic != LogisticRole.None && s.Max != 0);
-        bool shouldHaveVessels = entry.StorageSlots.Any(s => s.RemoteLogic != LogisticRole.None && s.Max != 0);
+        bool shouldHaveDrones = entry.Storages.Any(s => s.LocalLogic != LogisticRole.None && s.Max != 0);
+        bool shouldHaveVessels = entry.Storages.Any(s => s.RemoteLogic != LogisticRole.None && s.Max != 0);
 
         return (shouldHaveDrones, shouldHaveVessels);
     }

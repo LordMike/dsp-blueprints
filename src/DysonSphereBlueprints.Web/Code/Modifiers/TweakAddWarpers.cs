@@ -19,8 +19,8 @@ public class TweakAddWarpers(NotificationService notificationService)
     public override bool CanApply(BlueprintInterstellarLogisticsStationModel entry)
     {
         BlueprintLogisticsStationStorageModel? storageSlot =
-            entry.StorageSlots.FirstOrDefault(s => s.Item == DspItem.SpaceWarper) ??
-            entry.StorageSlots.LastOrDefault(s => !s.HasItem);
+            entry.Storages.FirstOrDefault(s => s.Item == DspItem.SpaceWarper) ??
+            entry.Storages.LastOrDefault(s => !s.HasItem);
 
         if (storageSlot == null)
             return false;
@@ -37,8 +37,8 @@ public class TweakAddWarpers(NotificationService notificationService)
     protected override void PerformSingle(BlueprintInterstellarLogisticsStationModel entry)
     {
         BlueprintLogisticsStationStorageModel? existingEntry =
-            entry.StorageSlots.FirstOrDefault(s => s.Item == DspItem.SpaceWarper) ??
-            entry.StorageSlots.LastOrDefault(s => !s.HasItem);
+            entry.Storages.FirstOrDefault(s => s.Item == DspItem.SpaceWarper) ??
+            entry.Storages.LastOrDefault(s => !s.HasItem);
 
         if (existingEntry == null)
             throw new InvalidOperationException("Unexpected");

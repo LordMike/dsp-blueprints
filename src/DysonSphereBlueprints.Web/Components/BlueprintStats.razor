@@ -63,7 +63,7 @@
                         }
                         @foreach (var building in buildingRecipeGroups)
                         {
-                            int[] resultItems = ItemRepository.Instance.Recipes[(int)building.Key.Recipe].Results;
+                            int[] resultItems = building.Key.Recipe == 0 ? [] : ItemRepository.Instance.Recipes[(int)building.Key.Recipe].Results;
 
                             <tr>
                                 <td>
