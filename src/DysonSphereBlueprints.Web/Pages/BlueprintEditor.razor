@@ -71,6 +71,8 @@
 }
 else
 {
+    var itemsImportExported = bpModel.InterstellarLogisticsStations.SelectMany(s => s.Storages).Concat(bpModel.PlanetaryLogisticsStations.SelectMany(s => s.Storages)).Select(s => s.Item).Where(s => s != 0).Distinct().Count();
+
     <RadzenTabs TabPosition="TabPosition.Top">
         <Tabs>
             <RadzenTabsItem
@@ -109,6 +111,9 @@ else
             </RadzenTabsItem>
             <RadzenTabsItem Text=@($"Buildings ({bpModel.Blueprint.buildings.Length:N0})")>
                 <BlueprintStats Model="bpModel"/>
+            </RadzenTabsItem>
+            <RadzenTabsItem Text=@($"Imports/Exports ({itemsImportExported:N0})")>
+                <BlueprintImportsExports Model="bpModel"/>
             </RadzenTabsItem>
         </Tabs>
     </RadzenTabs>

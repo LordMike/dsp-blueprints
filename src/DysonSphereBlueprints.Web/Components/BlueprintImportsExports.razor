@@ -1,0 +1,129 @@
+﻿@using DysonSphereBlueprints.Analysis.Analysis
+@using DysonSphereBlueprints.ItemStore
+@using DysonSphereBlueprints.ItemStore.Enums
+@using DysonSphereBlueprints.Web.Code.Model
+
+<RadzenTabs TabPosition="TabPosition.Left">
+    <Tabs>
+        <RadzenTabsItem Text="Items">
+            <div class="rz-p-0 rz-p-md-12">
+                <div class="rz-data-grid rz-datatable rz-datatable-scrollable">
+                    <table class="rz-grid-table rz-grid-table-fixed rz-grid-table-striped">
+                        <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Storage / Stations</th>
+                            <th>Interstellar</th>
+                            <th>Planetary</th>
+                            <th>Using</th>
+                            <th>Producing</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var stat in _itemStats)
+                        {
+                            <tr>
+                                <td>
+                                    <DspItemDisplay Model="stat.Item"/>
+                                </td>
+                                <td>@stat.TotalStorage.ToString("N0") / @stat.Stations.ToString("N0")</td>
+                                <td>@stat.Remotes</td>
+                                <td>@stat.Locals</td>
+                                <td>@stat.IsConsumedInBlueprint</td>
+                                <td>@stat.IsProducedInBlueprint</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </RadzenTabsItem>
+        <RadzenTabsItem Text="TODO">
+            <RadzenDataGrid @ref="grid" AllowFiltering="true" AllowColumnResize="true"
+                            FilterMode="FilterMode.Advanced" AllowPaging="true" AllowSorting="true" Data="@_itemStats"
+                            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" TItem="ItemStats"
+                            PageSizeOptions=@([10,25,50,100])
+                            LogicalFilterOperator="LogicalFilterOperator.And" FilterPopupRenderMode="PopupRenderMode.OnDemand">
+                <Columns>
+                    <RadzenDataGridColumn Property="@nameof(ItemStats.Item)" Filterable="true" Title="Item" Frozen="true">
+                        <Template Context="entry">
+                            <DspItemDisplay Model="entry.Item"/>
+                        </Template>
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn Title="Storage / Stations" Sortable="true" Filterable="false" >
+                        <Template Context="entry">
+                            @entry.TotalStorage.ToString("N0") / @entry.Stations.ToString("N0")
+                        </Template>
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn Property="@nameof(ItemStats.Remotes)" Title="Interstellar" Sortable="true" Filterable="true" />
+                    <RadzenDataGridColumn Property="@nameof(ItemStats.Locals)" Title="Planetary" Sortable="true" Filterable="true"/>
+                    <RadzenDataGridColumn Property="@nameof(ItemStats.IsConsumedInBlueprint)" Title="Consumes" Sortable="true" Filterable="true"/>
+                    <RadzenDataGridColumn Property="@nameof(ItemStats.IsProducedInBlueprint)" Title="Produces" Sortable="true" Filterable="true"/>
+                </Columns>
+            </RadzenDataGrid>
+        </RadzenTabsItem>
+    </Tabs>
+</RadzenTabs>
+
+@code {
+    RadzenDataGrid<ItemStats> grid;
+    private ItemStats[] _itemStats;
+    
+    [Parameter] public BlueprintEditModel Model { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        var stats = new Dictionary<DspItem, ItemStats>();
+
+        foreach (var storage in Model.PlanetaryLogisticsStations.SelectMany(s => s.Storages)
+                     .Concat(Model.InterstellarLogisticsStations.SelectMany(s => s.Storages)))
+        {
+            if (storage.Item == 0 || storage is { LocalLogic: LogisticRole.None, RemoteLogic: LogisticRole.None })
+                continue;
+
+            if (!stats.TryGetValue(storage.Item, out var stat))
+                stats[storage.Item] = stat = new ItemStats(storage.Item);
+
+            stat.TotalStorage += storage.Max;
+            stat.Locals |= storage.LocalLogic;
+            stat.Remotes |= storage.RemoteLogic;
+            stat.Stations++;
+        }
+
+        foreach (var building in Model.Blueprint.buildings)
+        {
+            if (building.recipeId == 0 || !ItemRepository.Instance.Recipes.TryGetValue(building.recipeId, out var recipe))
+                continue;
+
+            foreach (DspItem input in recipe.Items)
+            {
+                if (!stats.TryGetValue(input, out var stat))
+                    stats[input] = stat = new ItemStats(input);
+
+                stat.IsConsumedInBlueprint = true;
+            }
+
+            foreach (DspItem result in recipe.Results)
+            {
+                if (!stats.TryGetValue(result, out var stat))
+                    stats[result] = stat = new ItemStats(result);
+
+                stat.IsProducedInBlueprint = true;
+            }
+        }
+
+        _itemStats = stats.Values.ToArray();
+    }
+
+    class ItemStats(DspItem item)
+    {
+        public DspItem Item { get; } = item;
+        public LogisticRole Locals { get; set; }
+        public LogisticRole Remotes { get; set; }
+        public int TotalStorage { get; set; }
+        public int Stations { get; set; }
+        public bool IsConsumedInBlueprint { get; set; }
+        public bool IsProducedInBlueprint { get; set; }
+    }
+
+}

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using DysonSphereBlueprints.Analysis.Analysis;
 using DysonSphereBlueprints.ItemStore.Enums;
@@ -23,16 +24,23 @@ public sealed record BlueprintLogisticsStationStorageModel(BlueprintLogisticsSta
         get => (LogisticRole)LogisticsStationModel.Reference.parameters[Index * 6 + 1];
         set
         {
+            if (BitOperations.PopCount((uint)value) > 1)
+                throw new ArgumentException("LogisticsRole must be one value only", nameof(value));
+            
             LogisticsStationModel.Reference.parameters[Index * 6 + 1] = (int)value;
             NotifyPropertyChanged();
         }
     }
+
 
     public LogisticRole RemoteLogic
     {
         get => (LogisticRole)LogisticsStationModel.Reference.parameters[Index * 6 + 2];
         set
         {
+            if (BitOperations.PopCount((uint)value) > 1)
+                throw new ArgumentException("LogisticsRole must be one value only", nameof(value));
+
             LogisticsStationModel.Reference.parameters[Index * 6 + 2] = (int)value;
             NotifyPropertyChanged();
         }
