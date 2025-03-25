@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DysonSphereBlueprints.Web",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DysonSphereBlueprints.Analysis", "src\DysonSphereBlueprints.Analysis\DysonSphereBlueprints.Analysis.csproj", "{7D8994A5-A46C-4492-B4C4-FFC17673F2DE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DysonSphereBlueprints.Gamelibs", "src\DysonSphereBlueprints.Gamelibs\DysonSphereBlueprints.Gamelibs.csproj", "{C637B35F-1442-47C5-A77E-B1583A402C28}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,10 @@ Global
 		{7D8994A5-A46C-4492-B4C4-FFC17673F2DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D8994A5-A46C-4492-B4C4-FFC17673F2DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D8994A5-A46C-4492-B4C4-FFC17673F2DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C637B35F-1442-47C5-A77E-B1583A402C28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C637B35F-1442-47C5-A77E-B1583A402C28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C637B35F-1442-47C5-A77E-B1583A402C28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C637B35F-1442-47C5-A77E-B1583A402C28}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{AC81F3F2-24E6-45E1-AE5C-1AD6D5C96389} = {FE0DAD9A-2576-41D0-B562-E5E545F2DA08}
@@ -58,5 +64,6 @@ Global
 		{640196AA-53C6-4E89-ABC3-840FB0E229A3} = {FE0DAD9A-2576-41D0-B562-E5E545F2DA08}
 		{3694F869-2D8E-43A0-95F5-C21509B37C5F} = {FE0DAD9A-2576-41D0-B562-E5E545F2DA08}
 		{7D8994A5-A46C-4492-B4C4-FFC17673F2DE} = {FE0DAD9A-2576-41D0-B562-E5E545F2DA08}
+		{C637B35F-1442-47C5-A77E-B1583A402C28} = {FE0DAD9A-2576-41D0-B562-E5E545F2DA08}
 	EndGlobalSection
 EndGlobal

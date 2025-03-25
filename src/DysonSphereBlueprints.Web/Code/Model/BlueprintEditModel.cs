@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using DysonSphereBlueprints.Gamelibs.Code;
 using DysonSphereBlueprints.ItemStore.Enums;
 
 namespace DysonSphereBlueprints.Web.Code.Model;

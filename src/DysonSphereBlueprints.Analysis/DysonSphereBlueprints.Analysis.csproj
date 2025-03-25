@@ -7,12 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Reference Include="Assembly-CSharp">
-            <HintPath>G:\Steam\steamapps\common\Dyson Sphere Program\DSPGAME_Data\Managed\Assembly-CSharp.dll</HintPath>
-        </Reference>
-    </ItemGroup>
-
-    <ItemGroup>
+      <ProjectReference Include="..\DysonSphereBlueprints.Gamelibs\DysonSphereBlueprints.Gamelibs.csproj" />
       <ProjectReference Include="..\DysonSphereBlueprints.ItemStore\DysonSphereBlueprints.ItemStore.csproj" />
     </ItemGroup>
 
