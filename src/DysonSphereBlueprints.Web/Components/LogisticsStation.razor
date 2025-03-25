@@ -122,15 +122,19 @@
                 
                 <tr>
                     <td class="d-flex justify-content-between">
-                        <span>@storageView.Item</span>
-
-                        @if (slotDirections.Contains(StationDirection.Input))
+                        <DspItemDisplay Model="@storageView.Item" />
+                        
+                        @if (slotDirections.Contains(StationDirection.Input) && slotDirections.Contains(StationDirection.Output))
                         {
-                            <span title="This station has one or more belts receiving this item">(receiving)</span>
+                            <span title="This station has one or more belts taking and receiving this item">(belts in/out)</span>
                         }
-                        @if (slotDirections.Contains(StationDirection.Output))
+                        else if (slotDirections.Contains(StationDirection.Input))
                         {
-                            <span title="This station has one or more belts taking this item">(sending)</span>
+                            <span title="This station has one or more belts receiving this item">(belts in)</span>
+                        }
+                        else if (slotDirections.Contains(StationDirection.Output))
+                        {
+                            <span title="This station has one or more belts taking this item">(belts out)</span>
                         }
                         
                         @* @if (storageView.UsedInASlot) *@

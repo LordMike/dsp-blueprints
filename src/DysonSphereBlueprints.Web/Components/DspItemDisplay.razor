@@ -1,9 +1,16 @@
 ﻿@using DysonSphereBlueprints.ItemStore.Enums
-<div class="d-flex align-items-center">
-    <div class="icon me-2" data-icon="item.@((int)Model)"
-         style="width: 2em"></div>
-    @Model
-</div>
+@if (Model == 0)
+{
+    <span class="text-muted">(none)</span>
+}
+else
+{
+    <div class="d-flex align-items-center">
+        <div class="icon me-2" data-icon="item.@((int)Model)"
+             style="width: 2em"></div>
+        @Model
+    </div>
+}
 
 @code {
     [Parameter] public DspItem Model { get; set; }
