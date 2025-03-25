@@ -1,0 +1,28 @@
+name: Deploy bpx.mbwarez.dk
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Publish
+        run: dotnet publish -c Release -o dist
+
+      - name: Deploy to GitHub Pages (other repo via SSH)
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          deploy_key: ${{ secrets.DEPLOY_KEY }}
+          external_repository: lordmike/bpx.mbwarez.dk
+          publish_dir: ./dist/wwwroot
+          publish_branch: main

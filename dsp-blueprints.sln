@@ -19,6 +19,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DysonSphereBlueprints.Analy
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DysonSphereBlueprints.Gamelibs", "src\DysonSphereBlueprints.Gamelibs\DysonSphereBlueprints.Gamelibs.csproj", "{C637B35F-1442-47C5-A77E-B1583A402C28}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "github", "github", "{95D69A14-A519-4F4A-8AE2-95A3C5099657}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\pages.yml = .github\workflows\pages.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
