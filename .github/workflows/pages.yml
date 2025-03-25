@@ -26,3 +26,4 @@ jobs:
           external_repository: lordmike/bpx.mbwarez.dk
           publish_dir: ./dist/wwwroot
           publish_branch: main
+          cname: bpx.mbwarez.dk
