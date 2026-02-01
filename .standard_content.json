@@ -1,0 +1,15 @@
+{
+  "$schema": "https://github.com/LordMike/MBW.Tools.GhStandardContent/spec/StandardContent.json",
+  "meta": {
+    "repo": "LordMike/dsp-blueprints",
+    "profiles": [
+      "standardDotnet"
+    ],
+    "files": [
+      ".editorconfig",
+      ".github/workflows/dotnet.yml",
+      "Directory.Build.props"
+    ],
+    "last_updated": "2026-02-01T15:40:00.9314781+00:00"
+  }
+}

@@ -33,7 +33,9 @@ class Runner(
 
         await foreach (Uri pageUri in GetPages(token))
         {
-            List<BluePrintLink> links = await GetBlueprintLinks(pageUri, token).ToListAsync(token);
+            List<BluePrintLink> links = new();
+            await foreach (BluePrintLink link in GetBlueprintLinks(pageUri, token).WithCancellation(token))
+                links.Add(link);
 
             logger.LogInformation("Fetched {Count} links", links.Count);
 
