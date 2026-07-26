@@ -15,13 +15,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@0717577d45739eb3c851188b29f50ed6c0b2194e # v2
       with:
         fetch-depth: 50
     - run: git fetch --tags
 
     - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@871f041373faaad213a635d9afb62905ec029bbb # v1
       with:
         dotnet-version: 10.0.x
 
@@ -44,7 +44,7 @@ jobs:
       
     - name: "Github packages: Cleanup"
       if: github.ref == 'refs/heads/master'
-      uses: stripethree/gpr-janitor@dist
+      uses: stripethree/gpr-janitor@f3704c21869d8e021ba14e340ea28c879b35d1b1 # dist
       with:
         dry-run: false
         keep-versions: 25
